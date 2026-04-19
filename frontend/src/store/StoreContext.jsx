@@ -76,10 +76,10 @@ const StoreContextProvider = (props) => {
       try {
         axios.defaults.withCredentials = true
        const response =  await axios.post(`${backendUri}/api/cart/addToCart`, {itemId,size})
-       console.log(response);
+       
 
       } catch (error) {
-        console.log(error);
+        
       
     }
   };
@@ -110,7 +110,7 @@ const StoreContextProvider = (props) => {
         await axios.post(`${backendUri}/api/cart/upDateToCart`, {itemId,size, quantity})
        toast.success("UpDated successfully")
       } catch (error) {
-        console.log(error);
+        
         toast.error(error.message)
       
     }
@@ -126,7 +126,7 @@ const StoreContextProvider = (props) => {
         setCartItems(response.data.cartData)
       }
     } catch (error) {
-      console.log(error.message);
+      
     }
   }
     const  getCartAmount =   () => {

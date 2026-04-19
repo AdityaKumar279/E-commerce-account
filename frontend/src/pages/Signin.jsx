@@ -42,12 +42,12 @@ function Signin() {
         navigator('/login')
       } else {
         // toast.error(response.data.message)
-        console.log(response.data, "eee");
+        
       }
     } catch (error) {
-      console.log(error.response.data.message, "server error");
+      
       toast.error(error.response.data.message)
-      console.log(error);
+      
     }finally{
       setLoading(false)
 

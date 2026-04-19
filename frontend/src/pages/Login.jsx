@@ -38,10 +38,10 @@ function Login() {
                     navigator('/')
                 }else{
                     // toast.error(response.data.message)
-                    console.log(response.data, "eee");
+                    
                 }
             } catch (error) {
-                console.log(error);
+                
                 toast.error(error.response.data.massage);
             }  finally {
                 setLoading(false)

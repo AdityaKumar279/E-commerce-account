@@ -9,7 +9,7 @@ const connectCloudinary = async () => {
             api_secret: process.env.CLOUDINARY_SECRET_KET
         })
     } catch (error) {
-        console.log(error)
+        
     }
 }
 

@@ -38,7 +38,7 @@ function Cart() {
         {/*---------Product List Data ---------*/}
         {cartData.map((item, index) => {
           const productData = product.find((items) => item._id === items._id)
-          console.log(productData);
+          
           return(
             <div key={productData._id} className="flex justify-between align-middle items-center mt-10 border-t border-b py-2" >
                 <div className="flex gap-4">

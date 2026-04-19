@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const adminAuth = async (req, res, next) => {
     try {
         const {token} =  req.cookies
-        console.log(token);
+        
         if(!token){
             res.status(401).send({ error: 'Please  authenticate as admin' });
         }
@@ -15,7 +15,7 @@ const adminAuth = async (req, res, next) => {
         }
         next();
     } catch (e) {
-        console.log(e);
+        
         res.status(401).send({ error: 'Please authenticate as admin' });
     }
 };

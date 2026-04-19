@@ -57,7 +57,7 @@ function Contact() {
     try {
       // TODO: Replace with your actual API endpoint
       await new Promise(resolve => setTimeout(resolve, 1500))
-      console.log('Contact form submitted:', formData)
+      
       
       setSubmitted(true)
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' })

@@ -64,7 +64,7 @@ function Add({token}) {
    
 
     } catch (error) {
-      console.log(error, "server error");
+      
       toast.error('Something went wrong')
     }finally {
     setLoading(false)

@@ -209,9 +209,9 @@ const AdminLogout = async (req, res) => {
 const sendOtpVerificationEmail = async (req, res) => {
   try{
     const userId = req.body;
-    console.log(userId);
+    
     const user = await userModel.findById(userId);
-    console.log(user);
+    
     if(user.isAccountVerified){
       return res.status(400).json({message: "Account is already verified"});
     }
@@ -319,7 +319,7 @@ const verifySendOtp = async (req, res) => {
 const resetPassword = async (req, res) => {
   try {
     const { newPassword, confirmPassword, email } = req.body;
-    console.log(email);
+    
     const user = await userModel.findOne({ email });
 
     if (!user) {

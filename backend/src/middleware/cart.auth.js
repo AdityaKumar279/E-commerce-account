@@ -11,7 +11,7 @@ const authUser = async (req, res, next) =>  {
             req.body.productId = token_decode.id
             next()
         } catch (error) {
-            console.log(error);
+            
             res.status(401).send({ success: false, message: error.message })
         }
         

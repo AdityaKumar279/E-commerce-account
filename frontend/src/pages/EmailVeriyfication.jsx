@@ -11,10 +11,10 @@ function EmailVerification() {
             axios.defaults.withCredentials = true
             const response = await axios.post(`${backendUri}/api/users/send-otp`)
             if(response.data.success){
-                console.log(response.data);
+                
             }
         } catch (error) {
-            console.log(error);
+            
         }
     }
 

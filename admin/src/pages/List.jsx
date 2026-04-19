@@ -23,7 +23,7 @@ function List({token}) {
         toast.error('Failed to remove product')
       }
     } catch (error) {
-      console.log(error);
+      
       toast.error('Failed to remove product')
     }
   }

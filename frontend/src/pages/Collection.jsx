@@ -40,18 +40,18 @@ function Collection() {
   const applyFilter = () => {
     let temp = products.slice();
     if(Category.length > 0){
-      console.log(Category);
+      
       temp = temp.filter(item => Category.includes(item.category)); 
-      console.log(temp);
+      
     }
     if(subCategory.length > 0){
       temp = temp.filter(item => subCategory.includes(item.subCategory))
-      console.log(temp);
+      
     }
 
     // if(size.length > 0){
     //   temp = temp.filter(item => size.includes(item.sizes[0]))
-    //   console.log(temp);
+    //   
     // }
     setFilterProducts(temp)
   }

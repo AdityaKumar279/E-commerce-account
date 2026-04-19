@@ -44,7 +44,7 @@ function ForgetPassword() {
       }
     }
 
-    // console.log(formData, otp);
+    // 
     useEffect(() => {
       refArr.current[0]?.focus()
     }, [])
@@ -60,10 +60,10 @@ function ForgetPassword() {
             setStep(2)
 
         }
-        console.log(response.data);
+        
        
       } catch (error) {
-        console.log(error);
+        
       }finally{
         setLoading(false)
       }
@@ -79,9 +79,9 @@ function ForgetPassword() {
             setLoading(false)
             setStep(3)
           }
-          console.log(response);
+          
         } catch (error) {
-          console.log(error);
+          
         }finally{
           setLoading(false)
 
@@ -104,9 +104,9 @@ function ForgetPassword() {
           navigator('/login')
           setLoading(false)
         }
-        console.log(response);
+        
       } catch (error) {
-        console.log(error);
+        
       }finally{
         setLoading(false)
       }

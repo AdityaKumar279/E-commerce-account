@@ -8,7 +8,7 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
-   // console.log(login,password);
+   // 
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ function Login() {
             }
             
         } catch (error) {
-            console.log(error);
+            
             toast.error('Authentication failed.')
         }
         

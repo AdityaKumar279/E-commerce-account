@@ -25,7 +25,7 @@ function Orders({ token }) {
         setOrders(response.data.orders);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -35,13 +35,13 @@ function Orders({ token }) {
       const response = await axios.post(`${backendUri}/api/order/status`, {orderId,status:event.target.value})
     if(response.data.success){
       await FetchAllOrder();
-      console.log(response.data);
+      
     }
     } catch (error) {
-      console.log(error);
+      
     }
   } 
-  console.log(orders);
+  
   useEffect(() => {
     FetchAllOrder();
   }, [token]);
