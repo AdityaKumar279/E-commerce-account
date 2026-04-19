@@ -18,9 +18,10 @@ connectDB();
 connectCloudinary()
 
 // middlewares
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = [ 'https://e-commerce-account-frontend.onrender.com'];
 app.use(cors({
   origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 app.use(express.json());
