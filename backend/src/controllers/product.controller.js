@@ -85,6 +85,93 @@ const singleProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
+    // 1. Extract page and limit from the request query, with sensible defaults
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // 2. Calculate how many documents to skip to get to the requested page
+    const skip = (page - 1) * limit;
+
+    // 3. Fetch only the specific chunk of products
+    const list = await productModel.find({})
+      .skip(skip)
+      .limit(limit);
+
+    // 4. Count total documents to let the frontend know when to stop scrolling
+    const totalProducts = await productModel.countDocuments();
+    const hasMore = skip + list.length < totalProducts;
+
+    // Note: Changed status to 200 (OK) as 201 is typically for creating resources
+    res.status(200).json({
+      success: true,
+      message: "Product list fetched successfully",
+      list,
+      currentPage: page,
+      hasMore, // The frontend will use this to trigger the next fetch
+      totalProducts
+    });
+    
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server problem"
+    });
+  }
+};
+
+const searchProducts = async (req, res) => {
+  try {
+    // 1. Keyword query se nikalna
+    const keyword = req.query.keyword;
+
+    // Agar user ne bina kuch type kiye search API hit ki, toh error bhej dein
+    if (!keyword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a search keyword"
+      });
+    }
+
+    // 2. Pagination setup (Infinite scroll ke liye zaroori)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // 3. Search query banana (Case-insensitive matching ke liye $regex)
+    const searchQuery = {
+      name: { $regex: keyword, $options: "i" }
+    };
+
+    // 4. Products find karna
+    const list = await productModel.find(searchQuery)
+      .skip(skip)
+      .limit(limit);
+
+    // 5. Total count nikalna hasMore check karne ke liye
+    const totalProducts = await productModel.countDocuments(searchQuery);
+    const hasMore = skip + list.length < totalProducts;
+
+    res.status(200).json({
+      success: true,
+      message: "Search results fetched successfully",
+      list,
+      hasMore
+    });
+
+  } catch (error) {
+    console.error("Error in searchProducts:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server problem"
+    });
+  }
+};
+
+
+
+const listProducts = async (req, res) => {
+  try {
     const list = await productModel.find({})
         res.status(201).json({
             list,
@@ -100,4 +187,4 @@ const listProduct = async (req, res) => {
   }
 };
 
-export { addProduct, removeProduct, singleProduct, listProduct };
+export { addProduct, removeProduct, singleProduct, listProduct, searchProducts, listProducts };

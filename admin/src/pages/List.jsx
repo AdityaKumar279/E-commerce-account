@@ -9,12 +9,12 @@ function List({token}) {
 
   const FetchList = async () => {
     const response = await axios.get(backendUri+'/api/products/list' )
-    console.log(response);
     setList(response.data.list)
   }
 
   const RemoveProduct = async (id) => {
     try {
+      axios.defaults.withCredentials = true
       const response = await axios.post(backendUri+'/api/products/remove', {id}, {headers:{token}} )
       if(response.data.success){
         toast.success('Product removed successfully')

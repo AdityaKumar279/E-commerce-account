@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useDebugValue, useEffect, useState } from "react";
 import { StoreContext } from "../store/StoreContext";
 import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 
 function Cart() {
-  const { products, currency, cartItems, navigator,  UpdateQuantity, getCartAmount } = useContext(StoreContext);
+  const { product, currency, cartItems, navigator,  UpdateQuantity, getCartAmount } = useContext(StoreContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
 
-    if(products.length > 0){
+    if(product.length > 0){
       const tempData = [];
 
     for (const itemid in cartItems) {
@@ -28,7 +28,7 @@ function Cart() {
 
     }
     
-  }, [cartItems, products]);
+  }, [cartItems, product]);
 
   return (
     <>
@@ -37,12 +37,10 @@ function Cart() {
       <div >
         {/*---------Product List Data ---------*/}
         {cartData.map((item, index) => {
-          const productData = products.find(
-            (product) => product._id === item._id
-          );
-
+          const productData = product.find((items) => item._id === items._id)
+          console.log(productData);
           return(
-            <div key={index} className="flex justify-between align-middle items-center mt-10 border-t border-b py-2" >
+            <div key={productData._id} className="flex justify-between align-middle items-center mt-10 border-t border-b py-2" >
                 <div className="flex gap-4">
                     <div>
                         <img className="w-16 sm:w-20" src={productData.images[0]} alt="" />

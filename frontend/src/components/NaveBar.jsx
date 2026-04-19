@@ -2,11 +2,13 @@ import React, { useContext, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { assets } from '../../../admin/src/assets/frontend_assets/assets'
 import { StoreContext } from '../store/StoreContext'
+import EmailVerification from '../pages/EmailVeriyfication'
 
 function NaveBar() {
   const navigation = useNavigate()
   const [open, setOpen] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
+  
   const {getCartCount, navigator, token, setToken, setCartItems} = useContext(StoreContext)
 
   const logout = () => {
@@ -105,6 +107,8 @@ function NaveBar() {
         <NavLink to="/orders" >
           <p className='hover:text-gray-950 text-sm'>Orders</p>
         </NavLink>
+
+        < EmailVerification/>
         
           {token ? <p onClick={logout} className='hover:text-gray-950 text-sm cursor-pointer'>LogOut</p>
           : <p onClick={() => navigator('login')} className='hover:text-gray-950 text-sm cursor-pointer'>Login</p>}

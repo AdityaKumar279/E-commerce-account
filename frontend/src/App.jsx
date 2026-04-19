@@ -13,6 +13,8 @@ import Orders from './pages/Orders'
 import Signin from './pages/Signin'
 import Cart from './pages/Cart'
 import Footer from './components/Footer'
+import ForgetPassword from './pages/ForgetPassword';
+import EmailVerification from './pages/EmailVeriyfication';
 
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         <Route path='/register' element={<Signin/>}  />
         <Route path='/placeOrder' element={<PlaceOrder/>}  />
         <Route path='orders' element={<Orders/>}  />
+        <Route path='/forget-password' element={<ForgetPassword/>}/>
+        <Route path='/emailverification' element={<EmailVerification/>}/>
         <Route path='*' element={<h1>404</h1>}  />
       </Routes>
 

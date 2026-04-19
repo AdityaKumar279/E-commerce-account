@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 function Signin() {
   const { token, setToken, navigator, backendUri } = useContext(StoreContext);
+  const [loading, setLoading] = useState(false) 
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,18 +25,21 @@ function Signin() {
     event.preventDefault();
 
     try {
+      setLoading(true)
       const payload = {
         name: formData.name,
         email: formData.email,
         password: formData.password,
       };
+      // axios.defaults.withCredentials = true
       const response = await axios.post(
         `${backendUri}/api/users/register`,
         payload,
       );
       if (response.data.success) {
-        localStorage.setItem("token", response.data.user.token);
+        
         toast.success(response.data.message);
+        navigator('/login')
       } else {
         // toast.error(response.data.message)
         console.log(response.data, "eee");
@@ -43,6 +47,10 @@ function Signin() {
     } catch (error) {
       console.log(error.response.data.message, "server error");
       toast.error(error.response.data.message)
+      console.log(error);
+    }finally{
+      setLoading(false)
+
     }
   };
 
@@ -100,7 +108,7 @@ function Signin() {
               className=" cursor-pointer mt-2 w-full py-2 px-4 rounded-md text-white bg-black"
               type="submit"
             >
-              Register
+              {loading ? "loading" : "register"}
             </button>
             <div className="pt-4 text-center">
               <p>

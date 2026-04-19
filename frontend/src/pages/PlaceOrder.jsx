@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 function PlaceOrder() {
-  const { products, currency, setCartItems, cartItems, navigator,  UpdateQuantity, getCartAmount,backendUri,delivery_fee,token } = useContext(StoreContext);
+  const { product, currency, setCartItems, cartItems, navigator,  UpdateQuantity, getCartAmount,backendUri,delivery_fee,token } = useContext(StoreContext);
   const [method, setMethod] = useState('cod')
   const [formDAta, setFormDAta] = useState({
     firstName: '',
@@ -36,7 +36,7 @@ function PlaceOrder() {
       for (const itemid in cartItems) {
       for (const size in cartItems[itemid]) {
         if (cartItems[itemid][size] > 0) {
-          const itemInfo = structuredClone(products.find(product => product._id === itemid))
+          const itemInfo = structuredClone(product.find(product => product._id === itemid))
           if(itemInfo) {
             itemInfo.size = size
             itemInfo.quantity = cartItems[itemid][size]
@@ -55,8 +55,8 @@ function PlaceOrder() {
    try {
      switch(method) {
       case 'cod':
-        
-        const response = await axios.post(`${backendUri}/api/order/place`, orderData, {headers:{token}})
+        axios.defaults.withCredentials = true
+        const response = await axios.post(`${backendUri}/api/order/place`, orderData,)
         if(response.data.success) {
           toast.success(response.data.message)
           setCartItems({})
@@ -107,15 +107,15 @@ function PlaceOrder() {
       <div className='grid  grid-cols-2 sm:grid-cols-3 gap-2 mt-2'>
         <div onClick={() => setMethod('strip')} className= 'flex items-center border border-gray-300 w-full py-0.5 px-3.5 gap-1 cursor-pointer '>
           <p className={`min-w-3.5 h-3.5 border rounded-full  ${method === 'strip' ? 'bg-green-500' : '' }`}></p>
-          <button  className='text-blue-700 cursor-pointer '>strip</button>
+          <div  className='text-blue-700 cursor-pointer '>strip</div>
         </div>
         <div onClick={() => setMethod('Razorpay')} className= 'flex items-center border border-gray-300 w-full py-0.5 px-3.5 gap-1 cursor-pointer '>
           <p className={`min-w-3.5 h-3.5 border rounded-full  ${method === 'Razorpay' ? 'bg-green-500' : '' }`}></p>
-          <button  className='text-blue-700 cursor-pointer '>Razorpay</button>
+          <div  className='text-blue-700 cursor-pointer '>Razorpay</div>
         </div>
         <div onClick={() => setMethod('cod')} className= 'flex items-center border border-gray-300 w-full py-2 px-3.5 gap-1 cursor-pointer text-[10px] '>
           <p className={`min-w-3.5 h-3.5 border rounded-full  ${method === 'cod' ? 'bg-green-400' : '' }`}></p>
-          <button  className='text-blue-700 cursor-pointer '>CASH ON DELIVERY</button>
+          <div  className='text-blue-700 cursor-pointer '>CASH ON DELIVERY</div>
         </div>
       </div>
       <div className='w-full text-end mt-2'>

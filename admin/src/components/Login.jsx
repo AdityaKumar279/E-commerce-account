@@ -4,20 +4,20 @@ import { useState } from 'react'
 import { backendUri } from '../App';
 import { toast } from 'react-toastify';
 
-function Login({setToken}) {
+function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
    // console.log(login,password);
 
     const submitHandler = async (e) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
+            
+            axios.defaults.withCredentials = true
             const response = await axios.post(backendUri +"/api/users/admin/login", {email, password} )
             
             if(response.data.success){
-                setToken(response.data.token)
-                
                 toast.success(`Welcome back ${response.data.Admin}!`)
             }else{
                 toast.error('Authentication failed.')
@@ -25,6 +25,7 @@ function Login({setToken}) {
             }
             
         } catch (error) {
+            console.log(error);
             toast.error('Authentication failed.')
         }
         
@@ -46,7 +47,7 @@ function Login({setToken}) {
                         <p className='text-sm font-medium text-gray-700 mb-2'>password</p>
                         <input onChange={(e) => setPassword(e.target.value)} value={password} className='rounded-md w-full px-3 py-2 border border-gray-300 outline-none' type="password" placeholder='Enter your password' required />
                     </div>
-                    <button className='mt-2 w-full py-2 px-4 rounded-md text-white bg-black' type='submit'>Login</button>
+                    <button className='mt-2 w-full py-2 px-4 rounded-md text-white bg-black' type='submit' >Login</button>
                 </form>
             </div>
         </div>

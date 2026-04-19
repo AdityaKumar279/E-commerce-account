@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Card from '../components/Card'
 import { StoreContext } from '../store/StoreContext'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 function Collection() {
-  const {products} = useContext(StoreContext)
+  const {products,fetchProducts} = useContext(StoreContext)
   const [show, setShow] = useState(true);
   const [filterProducts, setFilterProducts] = useState([]);
   const [Category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
   // const [size, setSize] = useState([])
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
 
   const toggleCategory = (e) => {
@@ -60,6 +63,13 @@ function Collection() {
   useEffect(() => {
     applyFilter()
   },[Category, subCategory, products])
+
+
+  const fetchMoreData = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchProducts(nextPage);
+  };
 
 
   return (
@@ -118,7 +128,16 @@ function Collection() {
 
       </div>
 
-    
+    <InfiniteScroll
+        dataLength={products.length} // This is crucial so the library knows when to trigger 'next'
+        next={fetchMoreData}         // The function to call for the next page
+        hasMore={hasMore}            // Boolean telling it if there is more data to fetch
+        loader={<h4 style={{ textAlign: 'center' }}>Loading more items...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>You have seen all the products!</b>
+          </p>
+        }>
        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6 my-6 '>
         {
             filterProducts.map((product, index) =>(
@@ -136,6 +155,7 @@ function Collection() {
        
 
     </div>
+    </InfiniteScroll>
     </div>
     </>
   )

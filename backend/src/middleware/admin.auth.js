@@ -4,9 +4,10 @@ import jwt from 'jsonwebtoken';
 
 const adminAuth = async (req, res, next) => {
     try {
-        const {token} = req.headers;
+        const {token} =  req.cookies
+        console.log(token);
         if(!token){
-            res.status(401).send({ error: 'Please j authenticate as admin' });
+            res.status(401).send({ error: 'Please  authenticate as admin' });
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {

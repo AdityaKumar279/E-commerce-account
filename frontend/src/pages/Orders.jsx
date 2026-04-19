@@ -6,15 +6,11 @@ function Orders() {
   const {products, currency, backendUri, token} = useContext(StoreContext )
   const [orderData, setOrderData] = useState([])
 
-  console.log(token);
   const loadOrderData = async (e) => {
-    console.log(token);
     try {
-      if(!token){
-        return null
-      }
 
-      const response = await axios.post(`${backendUri}/api/order/userorders`, {}, {headers:{token}})
+      axios.defaults.withCredentials = true
+      const response = await axios.post(`${backendUri}/api/order/userorders`, {})
       if(response.data.success){
         let allOrdersItem = []
         response.data.orderData.map((order) => {
@@ -38,7 +34,7 @@ function Orders() {
 
   useEffect(() => {
     loadOrderData()
-  },[token])
+  },[])
 
   return (
     <div>

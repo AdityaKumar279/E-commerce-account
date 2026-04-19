@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, } from 'react'
+import { useNavigate } from "react-router-dom";
 
 function Nave({setToken}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+  const navigate = useNavigate()
   const [user] = useState({ name: 'Admin User', email: 'admin@example.com' })
 
   return (
@@ -12,8 +14,8 @@ function Nave({setToken}) {
         </div>
         <div></div>
         <div>
-            <button onClick={() => setToken("")} className='h-7 w-18 bg-amber-600 rounded-2xl' >
-              logout
+            <button onClick={() => navigate('login') } className='h-7 w-18 bg-amber-600 rounded-2xl' >
+              Login
             
             </button>
         </div>

@@ -45,7 +45,8 @@ function Add({token}) {
     image3 && formData.append('image3', image3);
     image4 && formData.append('image4', image4);
 
-    const response = await axios.post(backendUri+'/api/products/add', formData, {headers:{token}});
+    axios.defaults.withCredentials = true
+    const response = await axios.post(backendUri+'/api/products/add', formData, );
 
     if(response.data.success) {
       toast.success('Product Added Successfully')
