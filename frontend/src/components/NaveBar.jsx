@@ -108,7 +108,7 @@ function NaveBar() {
           <p className='hover:text-gray-950 text-sm'>Orders</p>
         </NavLink>
 
-        < EmailVerification/>
+        {/* < EmailVerification/> */}
         
           {token ? <p onClick={logout} className='hover:text-gray-950 text-sm cursor-pointer'>LogOut</p>
           : <p onClick={() => navigator('login')} className='hover:text-gray-950 text-sm cursor-pointer'>Login</p>}
