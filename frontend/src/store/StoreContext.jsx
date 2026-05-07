@@ -161,8 +161,8 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
       
-      // setToken(localStorage.getItem('token'));
-      // getUserCart(localStorage.getItem('token'))
+      setToken(localStorage.getItem('token'));
+      getUserCart(localStorage.getItem('token'))
 
     
 
