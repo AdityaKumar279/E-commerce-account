@@ -27,33 +27,35 @@ function Login() {
                 email: formData.email,
                 password: formData.password
             }
-            const response = await axios.post(`${backendUri}/api/users/login`, payload, {withCredentials:true})
+            const response = await axios.post(`${backendUri}/api/users/login`, payload, )
                 if(response.data.success){
                     
                     // setToken(Cookies.get('token'))
                     // setToken(response.data.user.token);
                     // localStorage.setItem('token', response.data.user.token)
+                    setToken(response.data.user.token);
+                    localStorage.setItem('token', response.data.user.token)
                     toast.success(response.data.message)
                     setLoading(false)
                     navigator('/')
                 }else{
-                    // toast.error(response.data.message)
+                    toast.error(response.data.message)
                     
                 }
             } catch (error) {
                 
-                toast.error(error.response.data.massage);
+                toast.error(error.response.data.message);
             }  finally {
                 setLoading(false)
             }     
             }
 
-            useEffect(() => {
-                if(token){
-                    navigator('/')
+            // useEffect(() => {
+            //     if(token){
+            //         navigator('/')
                     
-                }
-            },[token])
+            //     }
+            // },[token])
         
   return (
     <>

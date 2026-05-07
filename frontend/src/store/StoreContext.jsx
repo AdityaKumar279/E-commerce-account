@@ -56,12 +56,13 @@ const StoreContextProvider = (props) => {
       return;
     }
 
+    if(token){
     let cartData = structuredClone(cartItems);
 
     if (cartData[itemId]) {
       if (cartData[itemId][size]) {
         cartData[itemId][size] += 1;
-        toast("Item Added to Cart");
+        
       } else {
         cartData[itemId][size] = 1;
       }
@@ -74,15 +75,22 @@ const StoreContextProvider = (props) => {
 
     
       try {
-        axios.defaults.withCredentials = true
-       const response =  await axios.post(`${backendUri}/api/cart/addToCart`, {itemId,size})
-       
+        // axios.defaults.withCredentials = true
+       const response =  await axios.post(`${backendUri}/api/cart/addToCart`, {itemId,size}, {headers: {token}})
+       if(response.data.success){
+        toast.success("Item added to cart")
+       }else{
+        toast.error(response.data.message)
+       }
 
       } catch (error) {
-        
+        toast.error("Failed to add item to cart")
       
     }
-  };
+  }else{
+    toast.error("Please login to add items to cart")
+  }
+};
 
   const getCartCount = () => {
     let totalCount = 0;
@@ -104,30 +112,31 @@ const StoreContextProvider = (props) => {
     }
     setCartItems(cartData);
 
-  
+  if(token){
       try {
-        axios.defaults.withCredentials = true
-        await axios.post(`${backendUri}/api/cart/upDateToCart`, {itemId,size, quantity})
+        await axios.post(`${backendUri}/api/cart/upDateToCart`, {itemId,size, quantity}, {headers: {token}})
        toast.success("UpDated successfully")
       } catch (error) {
         
-        toast.error(error.message)
+        toast.error(error.response.data.message)
       
     }
-  };
+  }};
 
 
 
-  const getUserCart = async () => {
+  const getUserCart = async (token) => {
+    if(token){
     try {
-      axios.defaults.withCredentials = true
-      const response = await axios.post(`${backendUri}/api/cart/getToCart`,{}, )
+      // axios.defaults.withCredentials = true
+      const response = await axios.post(`${backendUri}/api/cart/getToCart`,{}, {headers: {token}})
       if(response.data.success) {
         setCartItems(response.data.cartData)
       }
     } catch (error) {
-      
+      toast.error(error.response.data.message)
     }
+  }
   }
     const  getCartAmount =   () => {
     let amount = 0;
@@ -151,9 +160,22 @@ const StoreContextProvider = (props) => {
   };
 
   useEffect(() => {
+      
+      // setToken(localStorage.getItem('token'));
+      // getUserCart(localStorage.getItem('token'))
+
+    
+
+  },[token])
+  useEffect(() => {
     FetchList();
-    //   setToken();
-      getUserCart()
+     if(!token && localStorage.getItem('token')) {
+      
+      setToken(localStorage.getItem('token'));
+      getUserCart(localStorage.getItem('token'))
+
+    }
+   
   }, [])
   const value = {
     backendUri,

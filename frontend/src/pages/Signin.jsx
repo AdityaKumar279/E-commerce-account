@@ -37,11 +37,11 @@ function Signin() {
         payload,
       );
       if (response.data.success) {
-        
+         localStorage.setItem("token", response.data.user.token);
         toast.success(response.data.message);
         navigator('/login')
       } else {
-        // toast.error(response.data.message)
+        toast.error(response.data.message)
         
       }
     } catch (error) {

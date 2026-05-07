@@ -5,7 +5,7 @@ import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 
 function Cart() {
-  const { product, currency, cartItems, navigator,  UpdateQuantity, getCartAmount } = useContext(StoreContext);
+  const { product, token, currency, cartItems, navigator,  UpdateQuantity, getCartAmount } = useContext(StoreContext);
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function Cart() {
 
     }
     
-  }, [cartItems, product]);
+  }, [cartItems, product,]);
 
   return (
     <>
@@ -64,7 +64,7 @@ function Cart() {
           
         })}
 
-        {getCartAmount() === 0 ?
+        { getCartAmount === 0 ?
         <div className="flex justify-center items-center py-20">
           <div className="text-2xl">Cart is Empty!</div>
         </div>

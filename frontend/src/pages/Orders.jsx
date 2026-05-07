@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Title from '../components/Title'
 import { StoreContext } from '../store/StoreContext'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 function Orders() {
   const {products, currency, backendUri, token} = useContext(StoreContext )
   const [orderData, setOrderData] = useState([])
@@ -9,8 +10,8 @@ function Orders() {
   const loadOrderData = async (e) => {
     try {
 
-      axios.defaults.withCredentials = true
-      const response = await axios.post(`${backendUri}/api/order/userorders`, {})
+      // axios.defaults.withCredentials = true
+      const response = await axios.post(`${backendUri}/api/order/userorders`, {},{headers: {token}})
       if(response.data.success){
         let allOrdersItem = []
         response.data.orderData.map((order) => {
@@ -26,15 +27,17 @@ function Orders() {
         
       }
     } catch (error) {
-      
+      toast.error("Failed to load order data")
     }
   }
 
 
 
   useEffect(() => {
-    loadOrderData()
-  },[])
+    if(token) {
+      loadOrderData()
+    }
+  },[token])
 
   return (
     <div>

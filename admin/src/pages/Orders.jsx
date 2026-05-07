@@ -1,12 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { backendUri } from "../App";
 import { useEffect } from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import currency from "../App";
+import { StoreContext } from "../store/StoreContext";
+import { useContext } from "react";
 
-function Orders({ token }) {
+function Orders() {
+  const {token, setToken,backendUri} = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
 
   const FetchAllOrder = async () => {
@@ -15,10 +17,10 @@ function Orders({ token }) {
     }
 
     try {
-      axios.defaults.withCredentials = true
+      // axios.defaults.withCredentials = true
       const response = await axios.post(
         `${backendUri}/api/order/list`,
-        {},
+        {}, { headers: { token }}
         
       );
       if (response.data.success) {
@@ -31,8 +33,8 @@ function Orders({ token }) {
 
   const FetchStatus = async (event, orderId) => {
     try {
-      axios.defaults.withCredentials = true
-      const response = await axios.post(`${backendUri}/api/order/status`, {orderId,status:event.target.value})
+      // axios.defaults.withCredentials = true
+      const response = await axios.post(`${backendUri}/api/order/status`, {orderId,status:event.target.value}, {headers:{token}})
     if(response.data.success){
       await FetchAllOrder();
       

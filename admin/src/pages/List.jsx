@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import React from 'react'
-import { backendUri } from '../App'
 import { toast } from 'react-toastify'
+import { useContext } from 'react'
+import { StoreContext } from '../store/StoreContext'
 
-function List({token}) {
+function List() {
+  const {token, setToken, backendUri} = useContext(StoreContext)
   const [list, setList] = useState([])
+  
 
   const FetchList = async () => {
-    const response = await axios.get(backendUri+'/api/products/list' )
+    const response = await axios.get(backendUri+'/api/products/lists', {}, {headers: {token}} )
     setList(response.data.list)
   }
 
@@ -48,8 +51,8 @@ function List({token}) {
         <div key={index} className='grid grid-cols-[1fr_3fr_1fr] md:grid-cols-[1fr_3fr_1fr_1fr_1fr] gap-2 items-center py-1 px-2 border text-sm'>
           <img className='w-12' src={item.images[0]} alt="" />
           <p>{item.name}</p>
-          <p>${item.category}</p>
-          <p>{item.price}</p>
+          <p>{item.category}</p>
+          <p>${item.price.toFixed(2)}</p>
           <p onClick={( )=> RemoveProduct(item._id)} className='text-right md:text-center cursor-pointer text-lg'>x</p>
         </div>
       ))}

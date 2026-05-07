@@ -8,13 +8,13 @@ function EmailVerification() {
     const verifyEmail = async (e) => {
         e.preventDefault()
         try {
-            axios.defaults.withCredentials = true
-            const response = await axios.post(`${backendUri}/api/users/send-otp`)
+            // axios.defaults.withCredentials = true
+            const response = await axios.post(`${backendUri}/api/users/send-otp`, {}, {headers: {token}})
             if(response.data.success){
-                
+                toast.success("OTP sent successfully")
             }
         } catch (error) {
-            
+            toast.error("Failed to send OTP")
         }
     }
 

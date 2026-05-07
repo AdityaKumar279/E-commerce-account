@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/frontend_assets/assets'
 import axios from 'axios'
-import { backendUri } from '../App'
 import { toast } from 'react-toastify'
+import { useContext } from 'react'
+import { StoreContext } from '../store/StoreContext'
 
-function Add({token}) {
-
+function Add() {
+  const {token, setToken, backendUri} = useContext(StoreContext)
   const [loading, setLoading] = useState(false)
 
   const [image1, setImage1] = useState(false)
@@ -45,8 +46,8 @@ function Add({token}) {
     image3 && formData.append('image3', image3);
     image4 && formData.append('image4', image4);
 
-    axios.defaults.withCredentials = true
-    const response = await axios.post(backendUri+'/api/products/add', formData, );
+    // axios.defaults.withCredentials = true
+    const response = await axios.post(backendUri+'/api/products/add', formData, {headers: {token}} );
 
     if(response.data.success) {
       toast.success('Product Added Successfully')

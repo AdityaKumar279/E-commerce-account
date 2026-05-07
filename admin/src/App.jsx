@@ -11,17 +11,11 @@ import Login from './components/Login';
 import Home from './pages/Home';
 
 
-export const backendUri = import.meta.env.VITE_APP_API_URL
+
 
 
 
 function App() {
-  // const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : "")
-  // useEffect(() => {
-   
-  //   localStorage.setItem('token', token)
-    
-  // }, [token])
 
   return (
     <>
@@ -29,7 +23,7 @@ function App() {
      
       
       <Nave/>
-      <ToastContainer/>
+    
       <div className='flex w-full'>
          <Sidebar/>
      
@@ -50,7 +44,7 @@ function App() {
       
 
   
-     
+        <ToastContainer/>
       </div>
     </>
   )

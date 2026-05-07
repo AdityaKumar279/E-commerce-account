@@ -43,14 +43,29 @@ const registerUser = async (req, res) => {
       expiresIn: '7d',
     });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    })
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // })
 
-    // Send welcome email
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "User registered in successfully",})
+
+    res.status(201).json({
+      success: true ,
+      message: "User registered successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        token: token,
+      },
+    });
+
+     // Send welcome email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,
@@ -61,21 +76,6 @@ const registerUser = async (req, res) => {
       Thank you for choosing our E-commerce app, and we look forward to serving you!`,
     });
 
-
-    return res.status(200).json({
-      success: true,
-      message: "User registered in successfully",})
-
-    // res.status(201).json({
-    //   success: true ,
-    //   message: "User registered successfully",
-    //   user: {
-    //     id: user._id,
-    //     name: user.name,
-    //     email: user.email,
-    //     token: token,
-    //   },
-    // });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error", success: false });
@@ -103,40 +103,40 @@ const loginUser = async (req, res) => {
        if(!isMatch){
             return res.status(400).json({
                 success: false,
-                massage: "Invalid email or password"
+                message: "Invalid email or password"
             });
         };
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    //     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    //   expiresIn: '7d',
+    // });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    })
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // })
 
-    return res.status(200).json({
-      success: true,
-      message: "User logged in successfully",})
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "User logged in successfully",})
 
-    // if (isMatch) {
-    //   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    //   res.status(200).json({
-    //     success: true,
-    //     message: "User logged in successfully",
-    //     user: {
-    //       id: user._id,
-    //       name: user.name,
-    //       email: user.email,
-    //       token: token,
-    //     },
-    //   });
-    // } else {
-    //   return res.status(400).json({ message: "Invalid credentials", success: false });
-    // }
+    if (isMatch) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {expiresIn: '7d'});
+      res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          token: token,
+        },
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid credentials", success: false });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error", success: false });
@@ -146,11 +146,11 @@ const loginUser = async (req, res) => {
 // route for user logout
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookie('token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-    });
+    // res.clearCookie('token', {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    // });
 
     return  res.status(200).json({ message: "User logged out successfully", success: true });
   } catch (error) {
@@ -168,24 +168,39 @@ const adminLogin = async (req, res) => {
       return res.status(400).json({ message: "Please enter all fields", success: false });
     }
 
-    if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+     if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
       const token = jwt.sign( email+password , process.env.JWT_SECRET);
-      res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    })
-
-    return res.status(200).json({
-      success: true,
-      message: "User logged in successfully",})
+      res.status(200).json({
+        success: true,
+        message: "User logged in successfully",
+        token: token,
+        Admin: "Aditya Kumar"
+      });
     }else{
       res.status(401).json({
         success: false,
         message: "Invalid Email or Password",
       });
     }
+
+    // if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    //   const token = jwt.sign( email+password , process.env.JWT_SECRET);
+    //   res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // })
+
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "User logged in successfully",})
+    // }else{
+    //   res.status(401).json({
+    //     success: false,
+    //     message: "Invalid Email or Password",
+    //   });
+    // }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -194,11 +209,11 @@ const adminLogin = async (req, res) => {
 
 const AdminLogout = async (req, res) => {
   try {
-    res.clearCookie('token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-    });
+    // res.clearCookie('token', {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === 'production',
+    //   sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    // });
 
     return  res.status(200).json({ message: "User logged out successfully", success: true });
   } catch (error) {

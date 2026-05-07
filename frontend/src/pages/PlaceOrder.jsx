@@ -55,8 +55,8 @@ function PlaceOrder() {
    try {
      switch(method) {
       case 'cod':
-        axios.defaults.withCredentials = true
-        const response = await axios.post(`${backendUri}/api/order/place`, orderData,)
+        // axios.defaults.withCredentials = true
+        const response = await axios.post(`${backendUri}/api/order/place`, orderData, {headers: {token}})
         if(response.data.success) {
           toast.success(response.data.message)
           setCartItems({})

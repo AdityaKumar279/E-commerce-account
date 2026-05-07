@@ -1,11 +1,21 @@
 import React, { useState, } from 'react'
+import { useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import { StoreContext } from '../store/StoreContext';
 
-function Nave({setToken}) {
+function Nave() {
+  const {token, setToken} = useContext(StoreContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const navigate = useNavigate()
   const [user] = useState({ name: 'Admin User', email: 'admin@example.com' })
+
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    setToken('')
+    navigate('login')
+  }
 
   return (
     <nav className='h-15 flex justify-between bg-gray-700 text-amber-50 px-3 items-center'>
@@ -14,10 +24,12 @@ function Nave({setToken}) {
         </div>
         <div></div>
         <div>
-            <button onClick={() => navigate('login') } className='h-7 w-18 bg-amber-600 rounded-2xl' >
-              Login
+          {token ? 
+            <button onClick={logout} className='h-7 w-18 bg-amber-600 rounded-2xl' >Logout</button>
+            :
+            <button onClick={() => navigate('login') } className='h-7 w-18 bg-amber-600 rounded-2xl' >Login</button>
+        }
             
-            </button>
         </div>
     </nav>
   )
